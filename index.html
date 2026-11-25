@@ -2,8 +2,39 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Desh Bolte Hain - Vector Maps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f2027">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Desh Bolte Hain">
+  
+  <title>Desh Bolte Hain</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="data:application/json,
+  {
+    \"name\": \"Desh Bolte Hain\",
+    \"short_name\": \"Desh Bolte\",
+    \"description\": \"Countries introduce themselves with maps and voice\",
+    \"start_url\": \".\",
+    \"display\": \"standalone\",
+    \"background_color\": \"#0f2027\",
+    \"theme_color\": \"#0f2027\",
+    \"orientation\": \"portrait\",
+    \"icons\": [
+      {
+        \"src\": \"https://flagcdn.com/w160/in.png\",
+        \"sizes\": \"192x192\",
+        \"type\": \"image/png\"
+      },
+      {
+        \"src\": \"https://flagcdn.com/w320/in.png\",
+        \"sizes\": \"512x512\",
+        \"type\": \"image/png\"
+      }
+    ]
+  }">
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
     body {
@@ -16,15 +47,16 @@
       justify-content: center;
       padding: 20px;
       transition: background 0.7s ease;
+      -webkit-tap-highlight-color: transparent;
     }
-    h1 { font-size: 1.9rem; margin-bottom: 6px; text-shadow: 0 2px 8px rgba(0,0,0,0.4); }
-    .subtitle { opacity: 0.85; margin-bottom: 20px; font-size: 0.95rem; }
+    h1 { font-size: 1.8rem; margin-bottom: 6px; text-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+    .subtitle { opacity: 0.85; margin-bottom: 18px; font-size: 0.95rem; }
     .card {
       background: rgba(255,255,255,0.12);
       backdrop-filter: blur(16px);
       border-radius: 24px;
-      padding: 25px 20px;
-      max-width: 440px;
+      padding: 22px 18px;
+      max-width: 420px;
       width: 100%;
       text-align: center;
       border: 1px solid rgba(255,255,255,0.18);
@@ -32,8 +64,8 @@
     }
     .map-container {
       width: 100%;
-      height: 260px;
-      margin: 0 auto 15px;
+      height: 240px;
+      margin: 0 auto 14px;
       background: rgba(255,255,255,0.95);
       border-radius: 18px;
       display: flex;
@@ -49,23 +81,23 @@
       filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(196deg) brightness(94%) contrast(97%);
     }
     .flag-small {
-      width: 70px;
-      height: 45px;
+      width: 68px;
+      height: 44px;
       object-fit: cover;
       border-radius: 6px;
       margin: 0 auto 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       display: block;
     }
-    .country-name { font-size: 1.7rem; font-weight: 700; margin-bottom: 6px; }
-    .capital { font-size: 1.1rem; margin-bottom: 12px; opacity: 0.95; }
+    .country-name { font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; }
+    .capital { font-size: 1.05rem; margin-bottom: 12px; opacity: 0.95; }
     .places {
       background: rgba(0,0,0,0.28);
       border-radius: 14px;
       padding: 12px;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       line-height: 1.5;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
     .buttons {
       display: flex;
@@ -74,19 +106,20 @@
       flex-wrap: wrap;
     }
     button {
-      padding: 11px 20px;
+      padding: 12px 18px;
       font-size: 0.95rem;
       border: none;
       border-radius: 50px;
       cursor: pointer;
       font-weight: 600;
       transition: all 0.25s;
+      touch-action: manipulation;
     }
     .btn-prev { background: #ff6b6b; color: white; }
     .btn-next { background: #4ecdc4; color: #111; }
     .btn-speak { background: #ffe66d; color: #111; }
-    button:hover { transform: scale(1.05); filter: brightness(1.1); }
-    .counter { margin-top: 15px; font-size: 0.88rem; opacity: 0.7; }
+    button:active { transform: scale(0.96); }
+    .counter { margin-top: 14px; font-size: 0.85rem; opacity: 0.7; }
   </style>
 </head>
 <body>
