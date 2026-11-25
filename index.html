@@ -3,255 +3,121 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Desh Bolte Hain - Country Map App</title>
+  <title>Desh Bolte Hain - Vector Maps</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
     body {
-      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
       min-height: 100vh;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       padding: 20px;
+      transition: background 0.7s ease;
     }
-    h1 {
+    h1 { font-size: 1.9rem; margin-bottom: 6px; text-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+    .subtitle { opacity: 0.85; margin-bottom: 20px; font-size: 0.95rem; }
+    .card {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(16px);
+      border-radius: 24px;
+      padding: 25px 20px;
+      max-width: 440px;
+      width: 100%;
       text-align: center;
-      margin-bottom: 10px;
-      font-size: 2.2rem;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.18);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.35);
     }
-    .subtitle {
-      text-align: center;
-      margin-bottom: 25px;
-      opacity: 0.9;
+    .map-container {
+      width: 100%;
+      height: 260px;
+      margin: 0 auto 15px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
     }
-    .countries {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 15px;
-      max-width: 900px;
-      margin: 0 auto 30px;
+    .map-container img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(196deg) brightness(94%) contrast(97%);
     }
-    .country-btn {
-      background: rgba(255,255,255,0.15);
-      border: 2px solid rgba(255,255,255,0.3);
-      border-radius: 16px;
-      padding: 15px 10px;
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.3s;
-      backdrop-filter: blur(8px);
-    }
-    .country-btn:hover {
-      background: rgba(255,255,255,0.3);
-      transform: scale(1.05);
-    }
-    .country-btn img {
+    .flag-small {
       width: 70px;
       height: 45px;
       object-fit: cover;
       border-radius: 6px;
-      margin-bottom: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    }
-    .country-btn span {
+      margin: 0 auto 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       display: block;
-      font-weight: 600;
-      font-size: 0.95rem;
     }
-    .info-card {
-      max-width: 700px;
-      margin: 0 auto;
-      background: rgba(0,0,0,0.45);
-      border-radius: 20px;
-      padding: 25px;
-      display: none;
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-    .info-card.active { display: block; animation: fadeIn 0.4s; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .map-area {
-      text-align: center;
+    .country-name { font-size: 1.7rem; font-weight: 700; margin-bottom: 6px; }
+    .capital { font-size: 1.1rem; margin-bottom: 12px; opacity: 0.95; }
+    .places {
+      background: rgba(0,0,0,0.28);
+      border-radius: 14px;
+      padding: 12px;
+      font-size: 0.92rem;
+      line-height: 1.5;
       margin-bottom: 20px;
     }
-    .map-area img {
-      max-width: 100%;
-      height: 220px;
-      object-fit: contain;
-      border-radius: 12px;
-      background: white;
-      padding: 10px;
+    .buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
-    .capital {
-      font-size: 1.4rem;
-      margin: 15px 0;
-      text-align: center;
-    }
-    .places {
-      background: rgba(255,255,255,0.1);
-      padding: 15px;
-      border-radius: 12px;
-      line-height: 1.6;
-    }
-    .speak-btn {
-      display: block;
-      margin: 20px auto 0;
-      padding: 12px 30px;
-      font-size: 1.1rem;
-      background: #00c853;
-      color: white;
+    button {
+      padding: 11px 20px;
+      font-size: 0.95rem;
       border: none;
       border-radius: 50px;
       cursor: pointer;
-      font-weight: bold;
+      font-weight: 600;
+      transition: all 0.25s;
     }
-    .speak-btn:hover { background: #00e676; }
+    .btn-prev { background: #ff6b6b; color: white; }
+    .btn-next { background: #4ecdc4; color: #111; }
+    .btn-speak { background: #ffe66d; color: #111; }
+    button:hover { transform: scale(1.05); filter: brightness(1.1); }
+    .counter { margin-top: 15px; font-size: 0.88rem; opacity: 0.7; }
   </style>
 </head>
 <body>
 
   <h1>🌍 Desh Bolte Hain</h1>
-  <p class="subtitle">Kisi bhi desh pe click karo aur suno!</p>
+  <p class="subtitle">Vector Map + Flag + Voice</p>
 
-  <div class="countries" id="countries"></div>
-
-  <div class="info-card" id="infoCard">
-    <div class="map-area">
-      <img id="countryMap" src="" alt="Country Map">
+  <div class="card">
+    <div class="map-container">
+      <img id="vectorMap" src="" alt="Country Map">
     </div>
-    <div class="capital" id="capitalText"></div>
-    <div class="places" id="placesText"></div>
-    <button class="speak-btn" onclick="speakAgain()">🔊 Dobara Suno</button>
+    <img id="flag" class="flag-small" src="" alt="Flag">
+    <div class="country-name" id="name"></div>
+    <div class="capital" id="capital"></div>
+    <div class="places" id="places"></div>
+
+    <div class="buttons">
+      <button class="btn-prev" onclick="prevCountry()">◀ Previous</button>
+      <button class="btn-speak" onclick="speakCurrent()">🔊 Suno</button>
+      <button class="btn-next" onclick="nextCountry()">Next ▶</button>
+    </div>
+    <div class="counter" id="counter"></div>
   </div>
 
   <script>
-    // Countries data
     const countries = [
-      {
-        name: "Pakistan",
-        code: "pk",
-        capital: "Islamabad",
-        places: "Badshahi Mosque, Lahore Fort, Hunza Valley, Karakoram Highway, Fairy Meadows",
-        speech: "Hi dosto, main Pakistan hoon. Mera capital Islamabad hai. Mere desh mein famous places hain jaise Badshahi Mosque, Lahore Fort, Hunza Valley aur Karakoram Highway."
-      },
-      {
-        name: "India",
-        code: "in",
-        capital: "New Delhi",
-        places: "Taj Mahal, Red Fort, Gateway of India, Kerala Backwaters, Himalayas",
-        speech: "Hi dosto, main India hoon. Mera capital New Delhi hai. Mere desh mein famous places hain jaise Taj Mahal, Red Fort, Gateway of India aur Himalayas."
-      },
-      {
-        name: "China",
-        code: "cn",
-        capital: "Beijing",
-        places: "Great Wall of China, Forbidden City, Terracotta Army, Shanghai Skyline",
-        speech: "Hi dosto, main China hoon. Mera capital Beijing hai. Mere desh mein famous places hain jaise Great Wall of China, Forbidden City aur Terracotta Army."
-      },
-      {
-        name: "Japan",
-        code: "jp",
-        capital: "Tokyo",
-        places: "Mount Fuji, Kyoto Temples, Tokyo Tower, Osaka Castle, Cherry Blossoms",
-        speech: "Hi dosto, main Japan hoon. Mera capital Tokyo hai. Mere desh mein famous places hain jaise Mount Fuji, Kyoto ke temples aur Tokyo Tower."
-      },
-      {
-        name: "USA",
-        code: "us",
-        capital: "Washington D.C.",
-        places: "Statue of Liberty, Grand Canyon, Yellowstone, Times Square, Golden Gate Bridge",
-        speech: "Hi dosto, main America hoon. Mera capital Washington D.C. hai. Mere desh mein famous places hain jaise Statue of Liberty, Grand Canyon aur Golden Gate Bridge."
-      },
-      {
-        name: "United Kingdom",
-        code: "gb",
-        capital: "London",
-        places: "Big Ben, Buckingham Palace, Stonehenge, Tower of London, Scottish Highlands",
-        speech: "Hi dosto, main United Kingdom hoon. Mera capital London hai. Mere desh mein famous places hain jaise Big Ben, Buckingham Palace aur Stonehenge."
-      },
-      {
-        name: "France",
-        code: "fr",
-        capital: "Paris",
-        places: "Eiffel Tower, Louvre Museum, Notre Dame, French Riviera, Mont Blanc",
-        speech: "Hi dosto, main France hoon. Mera capital Paris hai. Mere desh mein famous places hain jaise Eiffel Tower, Louvre Museum aur Notre Dame."
-      },
-      {
-        name: "Brazil",
-        code: "br",
-        capital: "Brasília",
-        places: "Christ the Redeemer, Amazon Rainforest, Iguazu Falls, Copacabana Beach",
-        speech: "Hi dosto, main Brazil hoon. Mera capital Brasília hai. Mere desh mein famous places hain jaise Christ the Redeemer, Amazon Rainforest aur Iguazu Falls."
-      },
-      {
-        name: "Australia",
-        code: "au",
-        capital: "Canberra",
-        places: "Sydney Opera House, Great Barrier Reef, Uluru, Bondi Beach",
-        speech: "Hi dosto, main Australia hoon. Mera capital Canberra hai. Mere desh mein famous places hain jaise Sydney Opera House, Great Barrier Reef aur Uluru."
-      },
-      {
-        name: "Saudi Arabia",
-        code: "sa",
-        capital: "Riyadh",
-        places: "Kaaba in Mecca, Medina, Edge of the World, Al-Ula, Jeddah Corniche",
-        speech: "Hi dosto, main Saudi Arabia hoon. Mera capital Riyadh hai. Mere desh mein famous places hain jaise Makkah ki Kaaba, Medina aur Al-Ula."
-      },
-      {
-        name: "Turkey",
-        code: "tr",
-        capital: "Ankara",
-        places: "Hagia Sophia, Cappadocia, Blue Mosque, Pamukkale, Istanbul Bazaars",
-        speech: "Hi dosto, main Turkey hoon. Mera capital Ankara hai. Mere desh mein famous places hain jaise Hagia Sophia, Cappadocia aur Blue Mosque."
-      },
-      {
-        name: "Egypt",
-        code: "eg",
-        capital: "Cairo",
-        places: "Pyramids of Giza, Sphinx, Nile River, Luxor Temples, Red Sea",
-        speech: "Hi dosto, main Egypt hoon. Mera capital Cairo hai. Mere desh mein famous places hain jaise Pyramids of Giza, Sphinx aur Nile River."
-      }
-    ];
-
-    let currentSpeech = "";
-
-    // Render country buttons
-    const container = document.getElementById("countries");
-    countries.forEach(c => {
-      const btn = document.createElement("div");
-      btn.className = "country-btn";
-      btn.innerHTML = `
-        <img src="https://flagcdn.com/w160/${c.code}.png" alt="${c.name}">
-        <span>${c.name}</span>
-      `;
-      btn.onclick = () => showCountry(c);
-      container.appendChild(btn);
-    });
-
-    function showCountry(c) {
-      document.getElementById("infoCard").classList.add("active");
-      document.getElementById("countryMap").src = `https://flagcdn.com/w640/${c.code}.png`;
-      document.getElementById("capitalText").innerHTML = `<strong>Capital:</strong> ${c.capital}`;
-      document.getElementById("placesText").innerHTML = `<strong>Famous Places:</strong><br>${c.places}`;
-      
-      currentSpeech = c.speech;
-      speak(c.speech);
-    }
-
-    function speak(text) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "hi-IN";          // Hindi voice
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
-      window.speechSynthesis.speak(utterance);
-    }
-
-    function speakAgain() {
-      if (currentSpeech) speak(currentSpeech);
-    }
-  </script>
-</body>
-</html>
+      { name: "Pakistan", code: "pk", capital: "Islamabad", places: "Badshahi Mosque, Hunza Valley, Lahore Fort, Fairy Meadows", speech: "Hi dosto, main Pakistan hoon. Mera capital Islamabad hai. Mere desh mein famous places hain jaise Badshahi Mosque, Hunza Valley aur Lahore Fort." },
+      { name: "India", code: "in", capital: "New Delhi", places: "Taj Mahal, Red Fort, Kerala Backwaters, Himalayas", speech: "Hi dosto, main India hoon. Mera capital New Delhi hai. Mere desh mein famous places hain jaise Taj Mahal, Red Fort aur Himalayas." },
+      { name: "China", code: "cn", capital: "Beijing", places: "Great Wall, Forbidden City, Terracotta Army", speech: "Hi dosto, main China hoon. Mera capital Beijing hai. Mere desh mein famous places hain jaise Great Wall of China aur Forbidden City." },
+      { name: "Japan", code: "jp", capital: "Tokyo", places: "Mount Fuji, Kyoto Temples, Tokyo Tower", speech: "Hi dosto, main Japan hoon. Mera capital Tokyo hai. Mere desh mein famous places hain jaise Mount Fuji aur Kyoto ke temples." },
+      { name: "United States", code: "us", capital: "Washington D.C.", places: "Statue of Liberty, Grand Canyon, Times Square", speech: "Hi dosto, main America hoon. Mera capital Washington D.C. hai. Mere desh mein famous places hain jaise Statue of Liberty aur Grand Canyon." },
+      { name: "United Kingdom", code: "gb", capital: "London", places: "Big Ben, Buckingham Palace, Stonehenge", speech: "Hi dosto, main United Kingdom hoon. Mera capital London hai. Mere desh mein famous places hain jaise Big Ben aur Buckingham Palace." },
+      { name: "France", code: "fr", capital: "Paris", places: "Eiffel Tower, Louvre, Notre Dame", speech: "Hi dosto, main France hoon. Mera capital Paris hai. Mere desh mein famous places hain jaise Eiffel Tower aur Louvre Museum." },
+      { name: "Brazil", code: "br", capital: "Brasília", places: "Christ the Redeemer, Amazon, Iguazu Falls", speech: "Hi dosto, main Brazil hoon. Mera capital Brasília hai. Mere desh mein famous places hain jaise Christ the Rede
